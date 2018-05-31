@@ -78,5 +78,32 @@ public class ControllerFacade implements IController {
     public IModel setModel(IModel) {
     	return this.model = model;
     }
+    
+    public Move (Loran.x, Loran.y, move) {
+    	switch
+    	
+    	case move = "RIGHT"
+    		Loran.x += 32;
+    	case move = "LEFT"
+    		Loran.x -= 32;
+    	case move = "UP"
+    		Loran.y += 32;
+    	case move = "DOWN";
+    		Loran.y -= 32;
+    	if Loran.x = Enemy.x || Loran.y = enemy.y {
+    		move = "DEATH";
+    		System.out.println("Vous êtes mort");
+    		//lives -=1;
+    	} else if Loran.x = Wall.x || Loran.y = Wall.y {
+    		move = false;
+    	} else if Loran.x = Bourse.x || Loran.y = Bourse.y {
+    		move = true;
+    		score += bourse.value;
+    	}else{
+    		move = true;
+    		return move;
+    		}
+      
+    }
 }
 

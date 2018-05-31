@@ -32,7 +32,7 @@ public class ControllerFacade implements IController {
     }
     
     /**
-     * Start.
+     * Start the game.
      *
      * @throws SQLException
      *             the SQL exception
@@ -49,6 +49,9 @@ public class ControllerFacade implements IController {
             message.append('\n');
         }
         this.getView().displayMessage(message.toString());
+        
+        //splashWindow
+        // lancer la vue qui demande le niveau
     }
     
     /**
@@ -59,7 +62,10 @@ public class ControllerFacade implements IController {
     public IView getView() {
         return this.view;
     }
-
+    
+    public IView setView(IView) {
+    	return this.view= view;
+    }
     /**
      * Gets the model.
      *
@@ -67,6 +73,10 @@ public class ControllerFacade implements IController {
      */
     public IModel getModel() {
         return this.model;
+    }
+    
+    public IModel setModel(IModel) {
+    	return this.model = model;
     }
 }
 

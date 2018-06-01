@@ -115,9 +115,19 @@ public class ControllerFacade implements IController {
     		for (Pawn test : Pawn_receive)
     			
     			if (test.x == Lorann.x) {
-    				Check_type(test);
+    				Check_type(test, move);
     			}
-    	}
+    	
+    public void Undo(move) {
+    	if (move = "LEFT") {
+    		Lorann.x += 32;
+    	} else if (move = "RIGHT") {
+    		Lorann.x -= 32;
+    	} else if (move = "UP") {
+    		Lorann.y -= 32;
+    	} else (move = "DOWN") {
+    		Lorann.y += 32;
+    }
     	/* Check Lorann_pos() {
     		if (lorann.x == bourse.x){ 
 			return score;
@@ -130,7 +140,7 @@ public class ControllerFacade implements IController {
     		
     	} else if (lorann.x == Wall.x || lorann.y == Wall.y) {
     		move = false;
-    	} else if (lorann.x == bourse.x || lorann.y == bourse.y) {
+    	} else if (lorann.x == bourse.x || lorann.y == bourse.y) { 
     		move = true;
     		score += bourse.value;
     	}else{

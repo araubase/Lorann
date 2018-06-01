@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 public class ControllerFacade implements IController {
 
+	String move;
     /** The view. */
     private final IView  view;
 
@@ -79,31 +80,61 @@ public class ControllerFacade implements IController {
     	return this.model = model;
     }
     
-    public Move (Loran.x, Loran.y, move) {
-    	switch
+    public void Check_type(pawn test) {
+    	if (test == instanceof Wall) {
+    		
+    	}
     	
-    	case move = "RIGHT"
-    		Loran.x += 32;
-    	case move = "LEFT"
-    		Loran.x -= 32;
-    	case move = "UP"
-    		Loran.y += 32;
-    	case move = "DOWN";
-    		Loran.y -= 32;
-    	if Loran.x = Enemy.x || Loran.y = enemy.y {
-    		move = "DEATH";
+    	if (test == instanceof Monster) {
+    		
+    	}
+    	
+    	if (test == instanceof Spell) {
+    		
+    	}
+    	
+    	if (test == instanceof Door) {
+    		
+    	}
+    	
+    	if (test == instanceof Energy) {
+    		
+    	}
+    	
+    	if (test == instanceof Loot) {
+    		
+    	}
+    	
+    	if (test == instanceof Corner) {
+    		
+    	}
+    }
+    public void Move(String Direction) {
+    	this.move = Direction;
+    }	/* loop for map.x =! lorann.x, case pour les hitbox, if map = instance of [object_name]	*/
+    		for (Pawn test : Pawn_receive)
+    			
+    			if (test.x == Lorann.x) {
+    				Check_type(test);
+    			}
+    	}
+    	/* Check Lorann_pos() {
+    		if (lorann.x == bourse.x){ 
+			return score;
+    		}
+    	}
+    	
+    	if (lorann.x == Monster.x || lorann.y == Monster.y) {
+    		move = "DEATH"; //false ?
     		System.out.println("Vous êtes mort");
-    		//lives -=1;
-    	} else if Loran.x = Wall.x || Loran.y = Wall.y {
+    		
+    	} else if (lorann.x == Wall.x || lorann.y == Wall.y) {
     		move = false;
-    	} else if Loran.x = Bourse.x || Loran.y = Bourse.y {
+    	} else if (lorann.x == bourse.x || lorann.y == bourse.y) {
     		move = true;
     		score += bourse.value;
     	}else{
     		move = true;
-    		return move;
+    		//return move;
     		}
-      
-    }
-}
-
+		return move;	*/

@@ -82,41 +82,51 @@ public class ControllerFacade implements IController {
     
     public void Check_type(pawn test) {
     	if (test == instanceof Wall) {
-    		
+    		Undo(move);
     	}
     	
     	if (test == instanceof Monster) {
-    		
+    		Death();
     	}
     	
     	if (test == instanceof Spell) {
-    		
+    		PickSpell();
     	}
     	
     	if (test == instanceof Door) {
-    		
+    		Death();
     	}
     	
     	if (test == instanceof Energy) {
-    		
+    		Key();
     	}
     	
     	if (test == instanceof Loot) {
-    		
+    		Loot();
     	}
     	
     	if (test == instanceof Corner) {
-    		
+    		Undo(move);
     	}
     }
     public void Move(String Direction) {
     	this.move = Direction;
     }	/* loop for map.x =! lorann.x, case pour les hitbox, if map = instance of [object_name]	*/
     		for (Pawn test : Pawn_receive)
-    			
-    			if (test.x == Lorann.x) {
+    			if (move = "LEFT") {
+    	    		Lorann.x -= 32;
+    	    	} else if (move = "RIGHT") {
+    	    		Lorann.x += 32;
+    	    	} else if (move = "UP") {
+    	    		Lorann.y += 32;
+    	    	} else (move = "DOWN") {
+    	    		Lorann.y -= 32;
+    	    	}
+    	    		if (test.x == Lorann.x) {
     				Check_type(test, move);
     			}
+
+    			
     	
     public void Undo(move) {
     	if (move = "LEFT") {

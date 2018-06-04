@@ -169,89 +169,132 @@ public class ControllerFacade {
                     pickup(pl);
                     setShot(false);
                 }
+    		} else if (pawn instanceof Spell) {
+    			if(pl instanceof Player) {
+                    pickup(pawn);
+                    move(pl, x, y);
+                    setShot(false);
+                } else {
+                    pickup(pl);
+                    setShot(false);
+                }
+    		}
+    	} else {
+    		move(pl, x, y);
     	}
     }
     
-    
-    public IModel setModel(IModel) {
-    	return this.model = model;
+    /**
+     * Inverts the spell direction.
+     *
+     * @param s
+     *          the spell
+     */
+    public void ChangeDirection(Spell s) {
+    	if(s.getDirection().equals(Direction.H_LEFT)) {
+            s.setDirection(Direction.H_RIGHT);
+        } else if(s.getDirection().equals(Direction.H_RIGHT)) {
+            s.setDirection(Direction.H_LEFT);
+        } else if(s.getDirection().equals(Direction.V_DOWN)) {
+            s.setDirection(Direction.V_UP);
+        } else if(s.getDirection().equals(Direction.V_UP)) {
+            s.setDirection(Direction.V_DOWN);
+        }
     }
     
-    public void Check_type(pawn test) {
-    	if (test == instanceof Wall) {
-    		Undo(move);
-    	}
-    	
-    	if (test == instanceof Monster) {
-    		Death();
-    	}
-    	
-    	if (test == instanceof Spell) {
-    		PickSpell();
-    	}
-    	
-    	if (test == instanceof Door) {
-    		Death();
-    	}
-    	
-    	if (test == instanceof Energy) {
-    		Key();
-    	}
-    	
-    	if (test == instanceof Loot) {
-    		Loot();
-    	}
-    	
-    	if (test == instanceof Corner) {
-    		Undo(move);
-    	}
+    /**
+    * Changes pawn coordinates.
+    * @param p
+    *			the pawn
+    * @param x      
+    *           the new x coordinate
+    * @param y
+    *          the new y coordinate
+    */
+    public void move(Pawn p, int x, int y) {
+    	p.setX(x);
+    	p.setY(y);
     }
-    public void Move(String Direction) {
-    	this.move = Direction;
-    }	/* loop for map.x =! lorann.x, case pour les hitbox, if map = instance of [object_name]	*/
-    		for (Pawn test : Pawn_receive)
-    			if (move = "LEFT") {
-    	    		Lorann.x -= 32;
-    	    	} else if (move = "RIGHT") {
-    	    		Lorann.x += 32;
-    	    	} else if (move = "UP") {
-    	    		Lorann.y += 32;
-    	    	} else (move = "DOWN") {
-    	    		Lorann.y -= 32;
-    	    	}
-    	    		if (test.x == Lorann.x) {
-    				Check_type(test, move);
-    			}
 
-    			
-    	
-    public void Undo(move) {
-    	if (move = "LEFT") {
-    		Lorann.x += 32;
-    	} else if (move = "RIGHT") {
-    		Lorann.x -= 32;
-    	} else if (move = "UP") {
-    		Lorann.y -= 32;
-    	} else (move = "DOWN") {
-    		Lorann.y += 32;
+    /**
+     * Remove a pawn from the map.
+     *
+     * @param p
+     *          the pawn
+     */
+    public void pickup(Pawn p) {
+        p.destroy();
+        setShot(false);
     }
-    	/* Check Lorann_pos() {
-    		if (lorann.x == bourse.x){ 
-			return score;
-    		}
-    	}
-    	
-    	if (lorann.x == Monster.x || lorann.y == Monster.y) {
-    		move = "DEATH"; //false ?
-    		System.out.println("Vous êtes mort");
-    		
-    	} else if (lorann.x == Wall.x || lorann.y == Wall.y) {
-    		move = false;
-    	} else if (lorann.x == bourse.x || lorann.y == bourse.y) { 
-    		move = true;
-    		score += bourse.value;
-    	}else{
-    		move = true;
-    		//return move;
-    		}
-		return move;	*/
+    
+    /**
+     * Kills the program.
+     */
+    public void die() {
+        System.exit(0);
+    }
+ 
+    /**
+     * Controls the game by performing actions.
+     *
+     * @param act
+     *          the action
+     * @param map
+     *          the map
+     */
+    public void play(Action act, Map map) {
+        ArrayList<Pawn> pawnsToAdd = new ArrayList<Pawn>();
+       
+        for (Pawn pawn : map.getPawns()) {
+            if (pawn instanceof Player) {
+                Player pl = (Player) pawn;
+ 
+                if (act == Action.MOVE_LEFT) {
+                    checkForMove(map, pl, pl.getX() - 32, pl.getY());
+                    lastAction = Action.MOVE_LEFT;
+                } else if (act == Action.MOVE_RIGHT) {
+                    checkForMove(map, pl, pl.getX() + 32, pl.getY());
+                    lastAction = Action.MOVE_RIGHT;
+                } else if (act == Action.MOVE_UP) {
+                    checkForMove(map, pl, pl.getX(), pl.getY() - 32);
+                    lastAction = Action.MOVE_UP;
+                } else if (act == Action.MOVE_DOWN) {
+                    checkForMove(map, pl, pl.getX(), pl.getY() + 32);
+                    lastAction = Action.MOVE_DOWN;
+                } else if (act == Action.SHOOT) {
+                    //if(hasShot == true) return;
+                    if(lastAction.equals(Action.MOVE_LEFT)) {
+                        pawnsToAdd.add(new Spell(pl.getX()-32, pl.getY(), Direction.H_LEFT));
+                    } else if(lastAction.equals(Action.MOVE_RIGHT)) {
+                        pawnsToAdd.add(new Spell(pl.getX()-32, pl.getY(), Direction.H_RIGHT));
+                    } else if(lastAction.equals(Action.MOVE_UP)) {
+                        pawnsToAdd.add(new Spell(pl.getX(), pl.getY()-32, Direction.V_UP));
+                    } else if(lastAction.equals(Action.MOVE_DOWN)) {
+                        pawnsToAdd.add(new Spell(pl.getX(), pl.getY()+32, Direction.V_DOWN));
+                    }
+                    setShot(true);
+                }
+            }
+        }
+        map.getPawns().addAll(pawnsToAdd);
+    }
+ 
+    /**
+     * Gets the shot attribute.
+     *
+     * @return the hasShot
+     */
+    public boolean hasShot() {
+        return shot;
+    }
+ 
+    /**
+     * Sets the shot attribute.
+     *
+     * @param hasShot
+     *          the hasShot to set
+     */
+    public void setShot(boolean shot) {
+        this.shot = shot;
+    }
+}

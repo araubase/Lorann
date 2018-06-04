@@ -1,22 +1,40 @@
 package fr.exia.controller;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
+
+import fr.exia.game.contract.IModel;
+import fr.exia.game.contract.IView;
+import fr.exia.game.model.Corner;
+import fr.exia.game.model.Door;
+import fr.exia.game.model.Energy;
+import fr.exia.game.model.Loot;
+import fr.exia.game.model.Map;
+import fr.exia.game.model.ModelFacade;
+import fr.exia.game.model.Monster;
+import fr.exia.game.model.Pawn;
+import fr.exia.game.model.Player;
+import fr.exia.game.model.Spell;
+import fr.exia.game.model.Wall;
+import fr.exia.game.model.enums.Action;
+import fr.exia.game.model.enums.Direction;
+import fr.exia.game.model.enums.State;
+import fr.exia.game.view.SplashWindow;
 
 /**
  * <h1>The Class ControllerFacade provides a facade of the Controller component.</h1>
- *
+ * 
+ * @author Jean-Aymeric DIET jadiet@cesi.fr
  * @author Yoan BIQUET yoan.biquet@viacesi.fr 
- * @version 2.0
+ * @version 1.0
  */
 
-public class ControllerFacade implements IController {
+public class ControllerFacade {
 
-	String move;
     /** The view. */
     private final IView  view;
 
     /** The model. */
-    private final IModel model;
+    private final ModelFacade model;
 
     /**
      * Instantiates a new controller facade.

@@ -36,6 +36,13 @@ public class ControllerFacade {
     /** The model. */
     private final ModelFacade model;
 
+    /** Last action performed. */
+    private Action lastAction = Action.MOVE_UP;
+    
+    /** The hasShot attribute. */
+    private boolean shot = false;
+    
+    
     /**
      * Instantiates a new controller facade.
      *
@@ -47,30 +54,23 @@ public class ControllerFacade {
     public ControllerFacade(final IView view, final IModel model) {
         super();
         this.view = view;
-        this.model = model;
+        this.model = (ModelFacade) model;
+        start();
+    }
+    
+    /** 
+     * Instantiates a new controller facade.
+     */
+    public ControllerFacade() {
+    	view = null;
+    	model = null;
     }
     
     /**
      * Start the game.
-     *
-     * @throws SQLException
-     *             the SQL exception
      */
-    public void start() throws SQLException {
-        this.getView().displayMessage(this.getModel().getExampleById(1).toString());
-
-        this.getView().displayMessage(this.getModel().getExampleByName("Example 2").toString());
-
-        final List<Example> examples = this.getModel().getAllExamples();
-        final StringBuilder message = new StringBuilder();
-        for (final Example example : examples) {
-            message.append(example);
-            message.append('\n');
-        }
-        this.getView().displayMessage(message.toString());
-        
-        //splashWindow
-        // lancer la vue qui demande le niveau
+    public void start() {
+    	new SplashWindow(model, this); // Launch SplashWindow which launch the Dialog and the GameWindow
     }
     
     /**
@@ -82,9 +82,6 @@ public class ControllerFacade {
         return this.view;
     }
     
-    public IView setView(IView) {
-    	return this.view= view;
-    }
     /**
      * Gets the model.
      *
@@ -93,6 +90,88 @@ public class ControllerFacade {
     public IModel getModel() {
         return this.model;
     }
+    
+    /** 
+     * Check if the move is possible and what occurs.
+     * 
+     * @param map
+     * 			the level map
+     * @param pl
+     * 			the pawn that interact
+     * @param x
+     * 			the x coordinate
+     * @param y
+     * 			the y coordinate
+     */
+    public void checkForMove(Map map, Pawn pl, int x, int y) {
+    	boolean isAPawn = false;
+    	Pawn pawn = null;
+    	
+    	for (Pawn obstacle : map.getPawns())){
+    		if (obstacle.getX() == x && obstacle.getY() == y && !(obstacle instanceof Player)) {
+    			isAPawn = true;
+    			pawn = obstacle;
+    		}
+    	}
+    	
+    	if (isAPawn== true) {
+    		if (pawn instanceof Wall || pawn instanceof Corner) {
+    			if (pl instance of Spell) {
+    				changeDirection((Spell) pl);
+    			}
+    		} else if (pawn instanceof Monster) {
+    			if (pl instanceof Spell) {
+    				setShot(false);
+    				pickup(pawn);
+    				pickup(pl);
+    			} else if (pl instanceof Player) {
+    				System.out.println("Game over: you died !");
+    				die();
+    			}
+    		} else if (pawn instanceof Door) {
+    			if (pl instanceof Spell) {
+    				changeDirection((Spell) pl);
+    			} else {
+    				Door door = (Door) pawn;
+    				
+    				if (door.getState().equals(State.CLOSED)) {
+    					System.out.println("Game over: you died !");
+    					die();
+    				} else {
+    					System.out.println("Congrats you won the level !");
+    					die();
+    				}
+    			}
+    		} else if (pawn instanceof Energy) {
+    			if (pl instanceof Player) {
+    				pickup(pawn);
+    				move(pl, x, y);
+    				for (Pawn pwns: map.getPawns()) {
+    					if (pwns instanceof Door) {
+    						Door d = (Door) pwns;
+    						d.setState(State.OPENED);
+    					}
+    				}
+    			}
+    			if (pl instanceof Spell) {
+    				changeDirection((Spell) pl);
+    			}
+    		}  else if (pawn instanceof Loot) {
+    			if (pl instanceof Player) {
+    				pickup(pawn);
+    				move(pl, x, y);
+    			}
+    			if (pl instanceof Spell) {
+    				changeDirection((Spell) pl);
+    			}
+    		} else if (pawn instanceof Player) {
+                if(pl instanceof Spell) {
+                    pickup(pl);
+                    setShot(false);
+                }
+    	}
+    }
+    
     
     public IModel setModel(IModel) {
     	return this.model = model;
